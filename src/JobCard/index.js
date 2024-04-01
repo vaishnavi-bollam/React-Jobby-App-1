@@ -1,8 +1,10 @@
+import {Link} from 'react-router-dom'
+
 import './index.css'
 
 const JobCard = props => {
   const {each} = props
-  //   console.log(each)
+  console.log(each.id)
   const {
     companyLogoUrl,
     employmentType,
@@ -14,17 +16,18 @@ const JobCard = props => {
     title,
   } = each
   return (
-    <div>
-      <div className="job-card">
+    <li className="job-item">
+      <Link to={`/jobs/${id}`}>
         <img src={companyLogoUrl} />
         <h1>{title}</h1>
+        <p>{id}</p>
         <p>{employmentType}</p>
         <p>{location}</p>
         <p>{packagePerAnnum}</p>
         <p>{rating}</p>
         <p>{jobDescription}</p>
-      </div>
-    </div>
+      </Link>
+    </li>
   )
 }
 

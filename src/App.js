@@ -4,6 +4,7 @@ import Login from './LoginForm/index'
 import Home from './Home/index'
 import ProtectedRoute from './protectedRoute/index'
 import Jobs from './Jobs/index'
+import JobDetails from './JobDetails/index'
 
 // // These are the lists used in the application. You can move them to any component needed.
 // const employmentTypesList = [
@@ -50,6 +51,7 @@ const App = () => (
     <Route exact path="/login" component={Login} />
     <ProtectedRoute exact path="/" component={Home} />
     <ProtectedRoute exact path="/jobs" component={Jobs} />
+    <ProtectedRoute exact path="/jobs/:id" component={JobDetails} />
   </Switch>
 )
 

@@ -59,10 +59,41 @@ class Jobs extends Component {
     activeEmployId: '',
     activeSalaryId: '',
     searchInput: '',
+    profileData: [],
   }
 
   componentDidMount() {
+    this.getProfile()
     this.getJobs()
+  }
+
+  getProfile = async () => {
+    const jwtToken = Cookies.get('jwt_token')
+    const url = 'https://apis.ccbp.in/profile'
+    const options = {
+      headers: {
+        authorization: `Bearer ${jwtToken}`,
+      },
+      method: 'GET',
+    }
+    const response = await fetch(url, options)
+    if (response.ok) {
+      const fetchedData = await response.json()
+      // console.log(fetchedData)
+      const updateProfileDetails = {
+        name: fetchedData.profile_details.name,
+        profileImageUrl: fetchedData.profile_details.profile_image_url,
+        shortBio: fetchedData.profile_details.short_bio,
+      }
+      this.setState({
+        profileData: updateProfileDetails,
+      })
+      console.log(updateProfileDetails)
+    } else {
+      this.setState({
+        apiStatus: apiStatusConstants.failure,
+      })
+    }
   }
 
   getJobs = async () => {
@@ -90,7 +121,7 @@ class Jobs extends Component {
       const updatedData = fetchedData.jobs.map(eachJob => ({
         companyLogoUrl: eachJob.company_logo_url,
         employmentType: eachJob.employment_type,
-        id: eachJob.job,
+        id: eachJob.id,
         jobDescription: eachJob.job_description,
         location: eachJob.location,
         packagePerAnnum: eachJob.package_per_annum,
@@ -125,7 +156,7 @@ class Jobs extends Component {
   }
 
   renderJobsListView = () => {
-    const {jobsData} = this.state
+    const {jobsData, profileData} = this.state
     return (
       <div className="job-container">
         <div>
@@ -136,11 +167,12 @@ class Jobs extends Component {
             changeSalary={this.changeSalary}
             changeSearchInput={this.changeSearchInput}
             enterSearchInput={this.enterSearchInput}
+            profileData={profileData}
           />
         </div>
         <div>
           {jobsData.map(each => (
-            <JobCard each={each} />
+            <JobCard each={each} key={each.id} />
           ))}
         </div>
       </div>

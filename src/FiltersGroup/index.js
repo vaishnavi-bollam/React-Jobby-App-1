@@ -1,4 +1,5 @@
 import {BsSearch} from 'react-icons/bs'
+import './index.css'
 
 const FiltersGroup = props => {
   const renderEmploymentType = () => {
@@ -61,9 +62,22 @@ const FiltersGroup = props => {
     )
   }
 
+  const renderUserInfo = () => {
+    const {profileData} = props
+    const {name, profileImageUrl, shortBio} = profileData
+    return (
+      <div className="profile-container">
+        <h1>{name}</h1>
+        <img src={profileImageUrl} />
+        <p>{shortBio}</p>
+      </div>
+    )
+  }
+
   return (
     <div>
       <ul>{renderSearchInput()}</ul>
+      <div>{renderUserInfo()}</div>
       <h1>Type of Employement</h1>
 
       <ul>{renderEmploymentType()}</ul>
